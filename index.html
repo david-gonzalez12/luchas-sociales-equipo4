@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipo 4: Luchas sociales</title>
+
+  <style>
+    /* variables */
+    :root{--c:#ff9600;--d:#d97f00;--verde:#58cc02;--verdeD:#58a700;--azul:#1cb0f6;--rojo:#ff4b4b;--rojoD:#ea2b2b;--oro:#ffc800;
+      --bg:#fff;--txt:#3c3c3c;--borde:#e5e5e5;--gris:#afafaf;--okbg:#d7ffb8;--malbg:#ffdfe0;
+      --fuente:"Nunito",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+    /* modo oscuro */
+    @media (prefers-color-scheme:dark){:root{--bg:#131f24;--txt:#f1f7fb;--borde:#37464f;--gris:#8a9ba5;--okbg:#1f3a12;--malbg:#3d1a1d}}
+
+    /* base */
+    *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+    html{scroll-padding-top:110px;scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--txt);font:700 17px/1.5 var(--fuente);-webkit-text-size-adjust:100%}
+    button{font-family:inherit;color:inherit;touch-action:manipulation}
+    button:focus{outline:3px solid var(--azul);outline-offset:2px}
+    button:focus:not(:focus-visible){outline:none}
+    .col{max-width:520px;margin:0 auto;padding:0 18px}
+
+    /* botones */
+    .btn{display:block;width:100%;border:0;border-radius:16px;padding:14px 22px;background:var(--verde);box-shadow:0 4px 0 var(--verdeD);color:#fff;font:900 1rem var(--fuente);letter-spacing:.06em;text-transform:uppercase;cursor:pointer}
+    .btn:active{transform:translateY(4px);box-shadow:none}
+    .btn:disabled{background:var(--borde);box-shadow:0 4px 0 var(--gris);color:var(--gris);cursor:not-allowed}
+    .btn.rojo{background:var(--rojo);box-shadow:0 4px 0 var(--rojoD)}
+    .btn.sec{margin-top:16px;border:2px solid var(--borde);background:transparent;box-shadow:0 4px 0 var(--borde);color:var(--azul)}
+
+    /* encabezado y menú de navegación */
+    header.top{position:sticky;top:0;z-index:5;border-bottom:2px solid var(--borde);background:var(--bg)}
+    header.top .col{display:flex;align-items:center;justify-content:space-between;padding-top:10px;padding-bottom:10px}
+    header.top .col.menu{justify-content:flex-start;gap:8px;padding-top:0;padding-bottom:10px;overflow-x:auto;white-space:nowrap}
+    .menu a{flex:none;border:2px solid var(--borde);border-radius:12px;padding:3px 12px;color:var(--azul);font-size:.9rem;font-weight:800;text-decoration:none}
+    .marca{color:var(--c);font-size:1.05rem;font-weight:900}
+    .stats{display:flex;margin:0;padding:0;list-style:none;font-weight:900;white-space:nowrap}
+    .stats li+li{margin-left:16px}
+    .stats .f{color:#ff9600}
+    .stats .x{color:var(--oro)}
+
+    /* pantalla de inicio */
+    .unidad{margin:26px 0 30px;border-radius:16px;padding:14px 18px;background:var(--c);box-shadow:0 4px 0 var(--d);color:#fff}
+    .unidad small{font-weight:800}
+    .unidad h1{margin:2px 0 4px;font-size:1.4rem;font-weight:900}
+    .unidad p{margin:0;font-size:.95rem}
+    .camino{margin:0;padding:0;list-style:none;text-align:center}
+    .nodo-wrap{position:relative;margin-bottom:34px}
+    .nodo{position:relative;width:88px;height:88px;border:0;border-radius:50%;background:var(--c);box-shadow:0 8px 0 var(--d);font-size:2.2rem;cursor:pointer;transform:translateX(var(--x))}
+    .nodo:active{transform:translateX(var(--x)) translateY(6px);box-shadow:0 2px 0 var(--d)}
+    /* nivel bloqueado: no se puede tocar hasta terminar el anterior */
+    .nodo:disabled{background:var(--borde);box-shadow:0 8px 0 var(--gris);cursor:not-allowed}
+    .nodo.hecho::after{content:"✓";position:absolute;top:-4px;right:-4px;width:30px;height:30px;border:3px solid var(--bg);border-radius:50%;background:var(--oro);color:#fff;font:900 1rem/24px var(--fuente)}
+    .nombre-n{display:block;margin-top:10px;color:var(--gris);font-size:.9rem;font-weight:800}
+    .aviso{display:block;color:var(--gris);font-size:.8rem;font-weight:700}
+    .burbuja{position:absolute;top:-46px;left:50%;margin-left:-48px;width:96px;border:2px solid var(--borde);border-radius:12px;padding:4px 0;background:var(--bg);color:var(--c);font:900 .85rem var(--fuente);white-space:nowrap}
+    .meta{margin-bottom:20px;color:var(--oro);font-size:1.2rem;font-weight:900;text-align:center}
+
+    /* sección informativa y pensamiento crítico */
+    .info,.critico{margin:10px 0 30px;border:2px solid var(--borde);border-radius:16px;padding:16px 18px}
+    .info h2,.critico h2{margin:0 0 8px;font-size:1.3rem;font-weight:900}
+    .info h3{margin:14px 0 4px;color:var(--c);font-size:1rem;font-weight:900}
+    .info p,.critico p{margin:0 0 8px}
+    .info ul,.info ol,.critico ul{margin:0;padding-left:1.3em}
+    .critico{border-color:var(--azul)}
+    .critico h2{color:var(--azul)}
+
+    /* lección */
+    #leccion{position:fixed;top:0;right:0;bottom:0;left:0;z-index:20;display:flex;flex-direction:column;background:var(--bg)}
+    #leccion[hidden]{display:none}
+    .l-top{display:flex;align-items:center;width:100%;max-width:640px;margin:0 auto;padding:16px 18px}
+    .l-top>*+*{margin-left:14px}
+    .cerrar{border:0;background:none;color:var(--gris);font-size:1.6rem;cursor:pointer}
+    .barra{flex:1;height:16px;border-radius:8px;background:var(--borde);overflow:hidden}
+    .barra i{display:block;width:0;height:100%;background:var(--verde)}
+    .vidas{color:var(--rojo);font-weight:900}
+    .l-cuerpo{flex:1;width:100%;max-width:640px;margin:0 auto;padding:10px 18px 30px;overflow:auto;overscroll-behavior:contain}
+    .l-cuerpo h2{margin:10px 0 22px;font-size:1.5rem;font-weight:900}
+    .lee{margin:-10px 0 16px;color:var(--gris)}
+
+    /* explicación de cada nivel */
+    .bloque{margin:0 0 14px;border:2px solid var(--borde);border-radius:16px;padding:14px 16px}
+    .bloque h3{margin:0 0 6px;color:var(--c);font-size:1rem;font-weight:900}
+    .bloque p,.bloque ul{margin:0}
+    .bloque ul{padding-left:1.2em}
+    .bloque.recuerda{border-color:var(--azul)}
+    .bloque.recuerda h3{color:var(--azul)}
+    .repaso{margin-top:26px}
+
+    /* opción múltiple y verdadero/falso */
+    .op{display:block;width:100%;border:2px solid var(--borde);border-radius:16px;padding:14px 16px;background:var(--bg);box-shadow:0 4px 0 var(--borde);font:800 1.05rem var(--fuente);text-align:left;cursor:pointer}
+    .op+.op{margin-top:12px}
+    .op.sel{border-color:var(--azul);background:rgba(28,176,246,.12);box-shadow:0 4px 0 var(--azul);color:var(--azul)}
+
+    /* ordenar y completar */
+    .linea{min-height:64px;margin-bottom:22px;border-top:2px solid var(--borde);border-bottom:2px solid var(--borde);padding:10px 0}
+    .linea .chip{display:block;width:100%}
+    .linea .chip+.chip{margin-top:8px}
+    .pool{display:flex;flex-wrap:wrap}
+    .pool .chip{margin:0 10px 10px 0}
+    .chip{border:2px solid var(--borde);border-radius:12px;padding:10px 14px;background:var(--bg);box-shadow:0 3px 0 var(--borde);font:800 1rem var(--fuente);text-align:left;cursor:pointer}
+    .chip.sel{border-color:var(--azul);background:rgba(28,176,246,.12);box-shadow:0 3px 0 var(--azul);color:var(--azul)}
+    .frase{margin:0 0 26px;font-size:1.25rem;font-weight:800;line-height:2.2}
+    .hueco{display:inline-block;min-width:110px;margin:0 4px;border-bottom:3px solid var(--azul);padding:0 8px;color:var(--azul);font-weight:900;text-align:center}
+
+    /* pie de la lección (comprobar, correcto, incorrecto) */
+    .pie{border-top:2px solid var(--borde);padding:16px 18px 22px}
+    .pie>div{max-width:640px;margin:0 auto}
+    .pie.ok{border-color:var(--okbg);background:var(--okbg);color:var(--verdeD)}
+    .pie.mal{border-color:var(--malbg);background:var(--malbg);color:var(--rojoD)}
+    .pie b{font-size:1.2rem;font-weight:900}
+    .pie p{margin:4px 0 14px;font-weight:700}
+
+    /* pantalla final */
+    .fin{padding-top:20px;text-align:center}
+    .fin .big{font-size:4.5rem}
+    .fin h2{color:var(--oro);font-size:1.8rem}
+    .cajas{margin:18px 0;text-align:center}
+    .caja{display:inline-block;min-width:110px;margin:0 6px;border:2px solid var(--oro);border-radius:14px;overflow:hidden}
+    .caja span{display:block;padding:2px;background:var(--oro);color:#fff;font-size:.8rem}
+    .caja b{display:block;padding:10px;color:var(--oro);font-size:1.4rem;font-weight:900}
+    .desbloqueo{margin:0 0 16px;color:var(--verdeD);font-weight:900}
+    .hoy{margin-bottom:20px;border:2px solid var(--azul);border-radius:16px;padding:14px 16px;text-align:left}
+    .hoy h3{margin:0 0 4px;color:var(--azul);font-size:1rem;font-weight:900}
+    .hoy p{margin:0}
+    .resumen{margin:0 0 16px;border:2px solid var(--verde);border-radius:16px;padding:14px 16px;text-align:left}
+    .resumen h3{margin:0 0 8px;color:var(--verdeD);font-size:1.05rem;font-weight:900}
+    .resumen h4{margin:10px 0 2px;color:var(--azul);font-size:.95rem;font-weight:900}
+    .resumen p{margin:0}
+
+    /* pie de página */
+    body>footer{border-top:2px solid var(--borde);padding:26px 0 40px;color:var(--gris);font-size:.9rem;text-align:center}
+    .integrantes{display:block;max-width:max-content;margin:6px auto 12px;padding-left:1.3em;list-style:disc;text-align:left}
+    .integrantes li{margin:4px 0}
+    #pie-equipo p{margin:8px 0}
+    details{margin:10px 0;font-weight:700;text-align:left}
+    summary{color:var(--azul);font-weight:900;cursor:pointer}
+
+    /* animaciones ligeras: solo opacity y transform */
+    @keyframes entra{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .l-cuerpo>*,.pie>div,.ruta-anim{animation:entra .22s ease-out both}
+    .nodo,.btn,.op,.chip{-webkit-user-select:none;user-select:none}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+    html.lento .l-cuerpo>*,html.lento .pie>div,html.lento .ruta-anim{animation:none!important}
+
+    /* flotar: los niveles y la burbuja "¡EMPIEZA!" suben y bajan */
+    @keyframes flota{
+      0%{transform:translateX(var(--x)) translateY(0) rotate(0deg)}
+      22%{transform:translateX(var(--x)) translateY(-10px) rotate(-2.5deg)}
+      45%{transform:translateX(var(--x)) translateY(-3px) rotate(.5deg)}
+      70%{transform:translateX(var(--x)) translateY(-12px) rotate(2.5deg)}
+      100%{transform:translateX(var(--x)) translateY(0) rotate(0deg)}}
+    @keyframes flotaBurbuja{
+      0%,100%{transform:translateY(0) rotate(-1.5deg)}
+      30%{transform:translateY(-8px) rotate(1.5deg)}
+      55%{transform:translateY(-2px) rotate(0deg)}
+      80%{transform:translateY(-9px) rotate(-1.5deg)}}
+    .nodo:not(:disabled){animation:flota 3.8s ease-in-out infinite;will-change:transform}
+    .nodo-wrap:nth-child(2n) .nodo:not(:disabled){animation-duration:4.4s;animation-delay:-1.4s}
+    .nodo-wrap:nth-child(3n) .nodo:not(:disabled){animation-duration:3.4s;animation-delay:-2.2s}
+    .nodo:not(:disabled):active{animation:none}
+    .burbuja{animation:flotaBurbuja 2.6s ease-in-out infinite}
+  </style>
+</head>
+
+<body>
+  <header class="top">
+    <div class="col">
+      <span class="marca" id="marca"></span>
+      <ul class="stats" aria-label="Tu progreso">
+        <li class="f" title="Días seguidos">🔥 <span id="s-racha">0</span></li>
+        <li class="x" title="Puntos de experiencia">⚡ <span id="s-xp">0</span></li>
+      </ul>
+    </div>
+
+    <!-- menú de navegación -->
+    <nav class="col menu" aria-label="Menú principal">
+      <a href="#ruta">🎮 Jugar</a>
+      <a href="#info">📖 Panorama</a>
+      <a href="#critico">💡 Hoy</a>
+      <a href="#det-fuentes" id="ir-fuentes">📚 Fuentes</a>
+      <a href="#pie-equipo">👥 Equipo</a>
+    </nav>
+  </header>
+
+  <main class="col">
+    <section id="ruta" aria-label="Ruta de aprendizaje"></section>
+
+    <!-- sección informativa central -->
+    <section class="info" id="info" aria-labelledby="t-info">
+      <h2 id="t-info">Panorama: luchas obreras, campesinas y femeninas</h2>
+      <article>
+        <p>Tras la Independencia, México se construyó como una república liberal, pero con profundas desigualdades. Obreros, campesinos y mujeres quedaron al margen de la ciudadanía plena y se organizaron para exigir derechos sociales (tierra, salario, educación) y políticos (asociación, huelga y voto).</p>
+        <h3>Causas</h3>
+        <p>Salarios bajos, jornadas de 12 a 16 horas, tiendas de raya, despojo de tierras comunales (Ley Lerdo, 1856) y la exclusión legal de las mujeres.</p>
+        <h3>Actores clave</h3>
+        <p>Sociedades mutualistas, el Gran Círculo de Obreros, pueblos campesinos e indígenas, Manuel Lozada, Rita Cetina Gutiérrez y Laureana Wright de Kleinhans.</p>
+        <h3>Cambios y continuidades</h3>
+        <p>Cambió la organización y la conciencia de los grupos excluidos; continuaron la desigualdad y el despojo hasta la Revolución, y el voto femenino federal llegó hasta 1953.</p>
+        <h3>Línea del tiempo</h3>
+        <ol>
+          <li>1847: Guerra de Castas en Yucatán</li>
+          <li>1853: Sociedad Particular de Socorros Mutuos</li>
+          <li>1856: Ley Lerdo</li>
+          <li>1857: Constitución (libertad de asociación)</li>
+          <li>1870: La Siempreviva (Rita Cetina Gutiérrez)</li>
+          <li>1871: Código Penal que castiga las huelgas</li>
+          <li>1872: Gran Círculo de Obreros</li>
+          <li>1876: Primer Congreso Obrero</li>
+          <li>1887: Violetas del Anáhuac</li>
+          <li>1916: Primer Congreso Feminista de Yucatán</li>
+          <li>1953: voto femenino en elecciones federales</li>
+        </ol>
+      </article>
+    </section>
+
+    <!-- elemento de pensamiento crítico -->
+    <section class="critico" id="critico" aria-labelledby="t-crit">
+      <h2 id="t-crit">Piensa y conecta con hoy</h2>
+      <p id="hoy-p"></p>
+      <ul>
+        <li>¿Qué derecho laboral usas o usarás (contrato, vacaciones, sindicato)?</li>
+        <li>¿Por qué crees que el voto femenino tardó hasta 1953?</li>
+        <li>¿Qué luchas por la tierra o por la igualdad siguen vigentes hoy?</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <div class="col">
+      <details id="det-fuentes">
+        <summary>Fuentes consultadas</summary>
+        <ul id="fuentes"></ul>
+      </details>
+      <div id="pie-equipo"></div>
+    </div>
+  </footer>
+
+  <section id="leccion" role="dialog" aria-modal="true" aria-label="Lección" hidden></section>
+
+  <script>
+    // Aquí se cambian las preguntas, las explicaciones y las fuentes.
+    // Tipos de pregunta:
+    //   op   -> opción múltiple (c = número de la correcta, empieza en 0)
+    //   vf   -> verdadero o falso (c = true o false)
+    //   ord  -> ordenar (las opciones se escriben ya en el orden correcto)
+    //   comp -> completar el texto (en x se pone ____ donde va el hueco, c = número de la correcta)
+    // explica -> la explicación que se lee antes de cada nivel; recuerda -> los datos clave
+    const DATOS = {
+      pie: "5ºAM PROGRAMACION · Equipo 4",
+      integrantes: ["Oscar David Vázquez González", "Nataly Onofre Luna", "Jeannette Pineda Benitez", "Ximena Sarabia González", "Karen Monserrat Urban Chávez"],
+      pie2: "Conciencia Histórica II profesor: Arquímides Gilberto Hernández Peralta / Diseña e Implementa Aplicaciones Web Profesor: Ing Antonio Ramirez Espino · Fecha: noviembre de 2026 rev: 1.0",
+      fuentes: [
+        "Knight, A. (2010). La Revolución mexicana. Fondo de Cultura Económica.",
+        "Cosío Villegas, D. (1955–1972). Historia moderna de México. Editorial Hermes.",
+        "Vázquez, J. Z. (coord.) (2010). Nueva historia mínima de México. El Colegio de México.",
+        "Libros de texto gratuitos de Historia, SEP (consulta en línea).",
+        "Cuaderno de Conciencia Histórica II, Progresión 4: Las luchas por los derechos en el siglo XIX (págs. 44–51)."
+      ],
+      unidad: {
+        equipo: 4,
+        icono: "✊",
+        nombre: "Luchas sociales",
+        tema: "Luchas obreras, campesinas y femeninas por derechos políticos, sociales y laborales, y por el sufragio universal en el siglo XIX",
+        hoy: "¿Qué derechos laborales, educativos o políticos que hoy parecen normales costaron lucha a otras personas?",
+        lecciones: [
+          {
+            nombre: "Nivel 1: Obreros y campesinos",
+            explica: [
+              ["Contexto", "Después de la Independencia, México quiso ser una república de ciudadanos libres e iguales, pero la mayoría trabajaba en haciendas, minas y las primeras fábricas textiles en condiciones muy duras. Con las Leyes de Reforma, la Ley Lerdo (1856) obligó a vender las tierras comunales de los pueblos, y muchas terminaron en manos de las haciendas."],
+              ["Causas", "Obreros: salarios bajos, jornadas de 12 a 16 horas, pago en vales para las tiendas de raya, trabajo infantil y ningún seguro ante accidentes. Campesinos: el despojo de sus tierras comunales y las deudas que los ataban a la hacienda (peonaje)."],
+              ["Actores clave", "Colectivos: sociedades mutualistas, el Gran Círculo de Obreros de México (1872), los campesinos y los pueblos indígenas, como los mayas en la Guerra de Castas (1847). Individuales: Manuel Lozada, «El Tigre de Álica», en Nayarit."],
+              ["Cómo se organizaron", "1853: Sociedad Particular de Socorros Mutuos. 1857: la Constitución reconoce la libertad de asociación, pero no el derecho de huelga, y el Código Penal de 1871 castigaba las huelgas. 1872: Gran Círculo de Obreros. 1876: Primer Congreso Obrero. Exigían mejor salario, jornada menor, fin del trabajo infantil y de las tiendas de raya."],
+              ["Cambios y continuidades", "Cambió que los trabajadores crearon organizaciones propias y tomaron conciencia de clase. Continuó la explotación y el despojo, que llegaron hasta el Porfiriato y alimentaron la Revolución; sus demandas se reconocieron hasta la Constitución de 1917 (artículos 27 y 123)."],
+              ["Cómo influye hoy", "El sindicato, la huelga, el salario justo y la jornada limitada son derechos que costaron lucha. También sigue vigente la defensa de la tierra de las comunidades campesinas."]
+            ],
+            recuerda: [
+              "El Gran Círculo de Obreros de México se fundó en 1872.",
+              "La Constitución de 1857 reconocía la libertad de asociación, pero no la huelga (el Código Penal de 1871 la castigaba).",
+              "Orden: Socorros Mutuos (1853) → Constitución (1857) → Gran Círculo (1872) → Primer Congreso Obrero (1876).",
+              "Los campesinos exigían recuperar la tierra de los pueblos."
+            ],
+            aprendiste: "Los trabajadores se organizaron en sociedades mutualistas (como la Sociedad Particular de Socorros Mutuos, 1853), en el Gran Círculo de Obreros (1872) y en el Primer Congreso Obrero (1876). La Constitución de 1857 reconocía la libertad de asociación, pero el Código Penal de 1871 castigaba las huelgas. Los campesinos se levantaron para recuperar tierras que las haciendas les habían quitado.",
+            actual: "Derechos laborales como el sindicato, la huelga, el salario justo y la jornada limitada costaron lucha. Conocer esa historia ayuda a valorarlos y a reconocer cuándo hoy no se respetan; también sigue vigente la defensa de la tierra de las comunidades campesinas.",
+            q: [
+              {
+                t: "op",
+                p: "¿Qué organización obrera se fundó en 1872 para agrupar a los trabajadores?",
+                o: ["Gran Círculo de Obreros de México", "Casa del Obrero Mundial", "Confederación Nacional Campesina", "Partido Liberal Mexicano"],
+                c: 0,
+                e: "Fue una de las primeras grandes organizaciones obreras del país.",
+                h: "Busca la que empieza con «Gran» y tiene «Círculo» en el nombre; la Casa del Obrero Mundial es posterior."
+              },
+              {
+                t: "vf",
+                p: "La Constitución de 1857 reconocía el derecho de huelga.",
+                c: false,
+                e: "No: reconocía la libertad de asociación, pero el Código Penal de 1871 castigaba las huelgas.",
+                h: "Distingue: libertad de asociación no es lo mismo que derecho de huelga. Recuerda lo que castigaba el Código Penal."
+              },
+              {
+                t: "ord",
+                p: "Ordena estos hechos del más antiguo al más reciente.",
+                o: ["Sociedad Particular de Socorros Mutuos", "Constitución de 1857", "Gran Círculo de Obreros", "Primer Congreso Obrero"],
+                e: "1853 → 1857 → 1872 → 1876.",
+                h: "Las sociedades de socorros mutuos fueron las primeras; el Congreso Obrero llegó después del Gran Círculo."
+              },
+              {
+                t: "comp",
+                p: "Completa el texto.",
+                x: "Entre las demandas campesinas del siglo XIX estaba recuperar la ____ de los pueblos, perdida frente a las haciendas.",
+                o: ["tierra", "moneda", "escuela", "iglesia"],
+                c: 0,
+                e: "El despojo agrario fue una de las causas principales de las rebeliones campesinas.",
+                h: "Los pueblos perdieron frente a las haciendas algo que cultivaban."
+              }
+            ]
+          },
+          {
+            nombre: "Nivel 2: Mujeres y sufragio",
+            explica: [
+              ["Contexto", "En el siglo XIX las mujeres estaban confinadas al espacio doméstico: el ideal era el «ángel del hogar». El Código Civil trataba a las casadas como menores de edad, sin control sobre sus propiedades ni sobre sus hijos, y se les negaba el acceso a la educación superior y a la política."],
+              ["Causas", "Una exclusión sistemática, legal y cultural: sin educación ni ciudadanía no podían votar, ejercer profesiones ni opinar en lo público."],
+              ["Actores clave", "Rita Cetina Gutiérrez, maestra yucateca que fundó La Siempreviva (1870), una sociedad educativa y literaria. Un grupo de pioneras, como Laureana Wright de Kleinhans, impulsó revistas como Las Hijas del Anáhuac y Violetas del Anáhuac (1887). También participaron soldaderas, enfermeras y espías en los conflictos del siglo."],
+              ["Formas de lucha y demandas", "La pluma como arma: periódicos y revistas escritos por mujeres. Su primera demanda fue la educación, para luego ejercer profesiones y contribuir al progreso de la nación. Después exigieron la ciudadanía plena y el sufragio. En 1916 se celebró el Primer Congreso Feminista de Yucatán."],
+              ["Cambios y continuidades", "Se abrieron escuelas normales y universidades para las mujeres. Pero el sufragio tardó mucho: el voto femenino en elecciones federales se reconoció en 1953 y se ejerció por primera vez en 1955."],
+              ["Cómo influye hoy", "Hoy las mujeres votan, estudian y ocupan cargos públicos gracias a esas luchas; siguen pendientes la igualdad real y la lucha contra la violencia de género."]
+            ],
+            recuerda: [
+              "Rita Cetina Gutiérrez impulsó la educación y la escritura de las mujeres con La Siempreviva (1870).",
+              "En el siglo XIX las mujeres no podían votar ni ser votadas.",
+              "Orden: La Siempreviva (1870) → Violetas del Anáhuac (1887) → Primer Congreso Feminista de Yucatán (1916) → voto federal (1953).",
+              "El voto femenino federal se reconoció en 1953 y se ejerció en 1955."
+            ],
+            aprendiste: "Las mujeres lucharon por educación, trabajo y derechos políticos. Rita Cetina Gutiérrez fundó La Siempreviva (1870) en Yucatán, surgieron las Violetas del Anáhuac (1887) y se celebró el Primer Congreso Feminista de Yucatán (1916). En el siglo XIX no podían votar; el voto femenino en elecciones federales se reconoció en 1953 y se ejerció en 1955.",
+            actual: "Hoy las mujeres votan, estudian y ocupan cargos públicos gracias a esas luchas. Esa historia ayuda a entender por qué siguen vigentes los reclamos de igualdad y participación política, y a valorar que el voto es un derecho ganado.",
+            q: [
+              {
+                t: "op",
+                p: "¿Qué impulsó Rita Cetina Gutiérrez en Yucatán con La Siempreviva?",
+                o: ["Una fábrica textil", "La educación y la escritura de las mujeres", "Una rebelión campesina", "Un partido político"],
+                c: 1,
+                e: "Fundó en 1870 esta sociedad educativa y literaria para mujeres.",
+                h: "Su sociedad llevaba el nombre de una flor y buscaba que las mujeres estudiaran y escribieran."
+              },
+              {
+                t: "vf",
+                p: "Las mujeres mexicanas tenían derecho a votar y ser votadas en el siglo XIX.",
+                c: false,
+                e: "No: la ciudadanía política de las mujeres se reconoció hasta el siglo XX.",
+                h: "Piensa en cuándo se reconoció la ciudadanía política de las mujeres: no fue en el siglo XIX."
+              },
+              {
+                t: "ord",
+                p: "Ordena estos hechos del más antiguo al más reciente.",
+                o: ["Fundación de La Siempreviva", "Fundación de Violetas del Anáhuac", "Primer Congreso Feminista de Yucatán", "Voto femenino en elecciones federales"],
+                e: "1870 → 1887 → 1916 → 1953.",
+                h: "La Siempreviva es lo más antiguo; el voto en elecciones federales es lo más reciente."
+              },
+              {
+                t: "comp",
+                p: "Completa el texto.",
+                x: "El derecho de las mujeres a votar en elecciones federales se reconoció en ____, y se ejerció por primera vez en 1955.",
+                o: ["1953", "1857", "1917", "1910"],
+                c: 0,
+                e: "Fue el resultado de una lucha que venía desde el siglo XIX.",
+                h: "Fue a mediados del siglo XX, mucho después de la Revolución."
+              }
+            ]
+          },
+          {
+            nombre: "Nivel 3: Campesinos y la tierra",
+            explica: [
+              ["Contexto", "La lucha por la tierra es una constante en la historia de México. En 1856, la Ley Lerdo, parte de las Leyes de Reforma, buscó debilitar el poder económico de la Iglesia, pero por su principio de desamortización también se aplicó a las tierras comunales de los pueblos indígenas. Al prohibir la propiedad corporativa, forzó la parcelación y venta de esas tierras."],
+              ["Causas", "Las comunidades perdieron el sustento y la cohesión social que les daban sus tierras. Sin recursos para formalizar sus títulos, muchos campesinos vendieron sus parcelas a bajo precio a grandes terratenientes. Así se consolidó el latifundio y la hacienda, donde millones de campesinos se volvieron peones acasillados, atados por deudas impagables a las tiendas de raya."],
+              ["Actores clave", "Los pueblos campesinos e indígenas, como los mayas de Yucatán, y líderes como Manuel Lozada, «El Tigre de Álica», en Nayarit. Más tarde, Emiliano Zapata popularizó el grito de «Tierra y Libertad»."],
+              ["Formas de resistencia", "Hubo rebeliones armadas, como la Guerra de Castas en Yucatán (1847) y el movimiento de Lozada, que exigía «ley y tierras». También hubo lucha legal, con batallas para defender los títulos de propiedad, y resistencia cotidiana, como la no cooperación o la demarcación clandestina de sus linderos."],
+              ["Demandas", "La principal exigencia era la restitución de las tierras comunales, junto con el fin del peonaje por deudas y el respeto a sus formas de gobierno y cultura."],
+              ["Cambios y continuidades", "Muchas rebeliones fueron aplastadas, pero mantuvieron viva la justicia agraria. La incapacidad del modelo liberal para resolver la cuestión de la tierra fue una de las causas estructurales de la Revolución Mexicana (1910). El Artículo 27 de la Constitución de 1917 estableció que la propiedad originaria de tierras y aguas es de la nación y reconoció la propiedad ejidal y comunal."],
+              ["Cómo influye hoy", "El derecho a la tierra y el apoyo al campo siguen siendo temas vigentes, y esta historia explica por qué hoy existe la propiedad ejidal y comunal."]
+            ],
+            recuerda: [
+              "La Ley Lerdo (1856) obligó a vender las tierras comunales de los pueblos.",
+              "Manuel Lozada, «El Tigre de Álica», lideró el movimiento agrario de Nayarit.",
+              "Los campesinos quedaron como peones atados por deudas a las tiendas de raya.",
+              "Orden: Guerra de Castas (1847) → Ley Lerdo (1856) → Revolución (1910) → Artículo 27 (1917).",
+              "El Artículo 27 reconoce la propiedad ejidal y comunal."
+            ],
+            aprendiste: "La Ley Lerdo (1856) obligó a vender las tierras comunales y favoreció el crecimiento de las haciendas, donde los campesinos quedaron como peones endeudados. Hubo rebeliones armadas (Guerra de Castas, 1847; Manuel Lozada en Nayarit), lucha legal y resistencia cotidiana. El Artículo 27 de 1917 reconoció la propiedad ejidal y comunal.",
+            actual: "El derecho a la tierra y el apoyo al campo siguen vigentes. Conocer esta lucha ayuda a entender por qué existe la propiedad ejidal y comunal y por qué el campo todavía reclama precios justos y acceso al agua.",
+            q: [
+              {
+                t: "op",
+                p: "¿Qué ley de 1856 obligó a vender las tierras comunales de los pueblos?",
+                o: ["Ley Lerdo", "Ley del Trabajo", "Plan de Ayala", "Ley de Imprenta"],
+                c: 0,
+                e: "Fue parte de las Leyes de Reforma y favoreció el crecimiento de las haciendas.",
+                h: "Lleva el apellido de un político liberal y forma parte de las Leyes de Reforma."
+              },
+              {
+                t: "vf",
+                p: "El Artículo 27 de la Constitución de 1917 reconoce la propiedad ejidal y comunal.",
+                c: true,
+                e: "Sí: estableció que la propiedad originaria de tierras y aguas es de la nación y reconoció las formas de propiedad ejidal y comunal.",
+                h: "Es el artículo que habla de la tierra, no el de los derechos laborales."
+              },
+              {
+                t: "ord",
+                p: "Ordena estos hechos del más antiguo al más reciente.",
+                o: ["Guerra de Castas en Yucatán", "Ley Lerdo", "Inicio de la Revolución Mexicana", "Artículo 27 de la Constitución"],
+                e: "1847 → 1856 → 1910 → 1917.",
+                h: "La Guerra de Castas es la más antigua; el Artículo 27 es de la Constitución que surgió de la Revolución."
+              },
+              {
+                t: "comp",
+                p: "Completa el texto.",
+                x: "Muchos campesinos quedaron como peones atados por deudas a las tiendas de ____.",
+                o: ["raya", "regalos", "juguetes", "comida"],
+                c: 0,
+                e: "Las tiendas de raya de las haciendas endeudaban a los peones con vales y precios inflados.",
+                h: "Eran las tiendas de la hacienda donde se pagaba con vales."
+              }
+            ]
+          },
+          {
+            nombre: "Nivel 4: Obreros y fábricas",
+            explica: [
+              ["Contexto", "Con la incipiente industrialización en sectores como el textil, el tabaco y la minería surgió una nueva clase social: el proletariado urbano y minero, que trabajaba en condiciones inhumanas."],
+              ["Causas", "Las jornadas laborales se extendían de 12 a 16 horas diarias y los salarios eran miserables, pagados con frecuencia en vales para las tiendas de raya, donde los precios estaban inflados. No existía seguridad laboral, los accidentes eran constantes y fatales, y el trabajo infantil era la norma. Cualquier protesta se castigaba con el despido o la represión violenta."],
+              ["Formas de organización", "La primera forma de organización obrera fue el mutualismo: las sociedades de socorros mutuos ofrecían a sus miembros un seguro rudimentario contra enfermedades, accidentes y gastos funerarios, y funcionaron también como espacios de discusión y politización. El Gran Círculo de Obreros de México, fundado en 1872, fue una de las organizaciones más importantes."],
+              ["Huelgas", "A pesar del riesgo, los obreros recurrieron a la huelga para presionar por sus demandas. Fueron pioneras la huelga de la fábrica textil de San Ildefonso (1865) y las huelgas de los mineros de Pachuca. Más tarde, las huelgas de Cananea (1906) y Río Blanco (1907) heredarían esta tradición."],
+              ["Demandas", "Aumento salarial, reducción de la jornada (a 8 o 10 horas), prohibición del trabajo infantil, derecho a la libre asociación, eliminación de las tiendas de raya y pago en moneda de curso legal."],
+              ["Cambios y continuidades", "Las primeras luchas obreras estuvieron fragmentadas, pero crearon conciencia de clase. Sus demandas se reconocieron en el Artículo 123 de la Constitución de 1917: jornada de 8 horas, derecho de huelga y de asociación, y protección a la maternidad."],
+              ["Cómo influye hoy", "La jornada de 8 horas, el salario mínimo, las vacaciones, la seguridad social y los sindicatos son frutos de esas luchas; siguen pendientes mejores salarios y evitar la explotación laboral."]
+            ],
+            recuerda: [
+              "La primera forma de organización obrera fue el mutualismo.",
+              "El trabajo infantil era la norma y prohibirlo fue una demanda obrera.",
+              "Orden: huelga de San Ildefonso (1865) → Gran Círculo (1872) → Cananea (1906) → Río Blanco (1907).",
+              "El Artículo 123 de 1917 estableció la jornada de 8 horas y el derecho de huelga."
+            ],
+            aprendiste: "Con la industrialización surgió el proletariado, que sufría jornadas de 12 a 16 horas, salarios en vales y trabajo infantil. Se organizó primero en sociedades mutualistas y en el Gran Círculo de Obreros (1872), y recurrió a las huelgas (San Ildefonso, 1865; Cananea, 1906; Río Blanco, 1907). El Artículo 123 de 1917 reconoció la jornada de 8 horas y el derecho de huelga.",
+            actual: "La jornada de 8 horas, el salario mínimo, las vacaciones, la seguridad social y los sindicatos nacieron de estas luchas. Siguen siendo necesarios mejores salarios y condiciones de trabajo para todos.",
+            q: [
+              {
+                t: "op",
+                p: "¿Cuál fue la primera forma de organización de los obreros?",
+                o: ["El mutualismo", "Un partido político", "La Confederación Nacional Campesina", "Los sindicatos nacionales"],
+                c: 0,
+                e: "Las sociedades de socorros mutuos ofrecían un seguro rudimentario a sus miembros.",
+                h: "Se basaba en ayudarse «mutuamente» ante enfermedades, accidentes y gastos funerarios."
+              },
+              {
+                t: "vf",
+                p: "El trabajo infantil estaba prohibido en las fábricas del siglo XIX.",
+                c: false,
+                e: "No: era la norma, y prohibirlo fue una de las demandas de los obreros.",
+                h: "Fue una de las exigencias de los obreros, así que todavía no estaba prohibido."
+              },
+              {
+                t: "ord",
+                p: "Ordena estas huelgas y organizaciones del más antiguo al más reciente.",
+                o: ["Huelga textil de San Ildefonso", "Fundación del Gran Círculo de Obreros", "Huelga de Cananea", "Huelga de Río Blanco"],
+                e: "1865 → 1872 → 1906 → 1907.",
+                h: "San Ildefonso es la más antigua; Río Blanco es la más reciente."
+              },
+              {
+                t: "comp",
+                p: "Completa el texto.",
+                x: "El Artículo ____ de la Constitución de 1917 estableció la jornada de 8 horas y el derecho de huelga.",
+                o: ["123", "27", "3", "14"],
+                c: 0,
+                e: "Recogió las demandas de las luchas obreras del siglo XIX.",
+                h: "Es el artículo de los derechos laborales, no el de la tierra."
+              }
+            ]
+          },
+          {
+            nombre: "Nivel 5: Mujeres y ciudadanía",
+            explica: [
+              ["Contexto", "Confinadas legal y culturalmente al espacio doméstico, las mujeres del siglo XIX desafiaron las barreras que les impusieron. El ideal femenino era el «ángel del hogar», dedicada exclusivamente a la familia."],
+              ["Causas", "Una exclusión sistemática: el Código Civil consideraba a las casadas menores de edad, sin control sobre sus propiedades ni sobre sus hijos, y se les negaba el acceso a la educación superior y a cualquier forma de participación política."],
+              ["Formas de lucha", "Participaron en los conflictos del siglo como soldaderas, enfermeras, contrabandistas y espías; su presencia desmentía su supuesta fragilidad. Pero su lucha más articulada fue la pluma: fundaron revistas como Las Hijas del Anáhuac y Violetas del Anáhuac, impulsadas por pioneras como Laureana Wright de Kleinhans y Rita Cetina Gutiérrez."],
+              ["Demandas", "Su primera demanda fue el derecho a la educación, porque solo así podrían desarrollarse plenamente y contribuir al progreso de la nación. A partir de ahí derivaron otras exigencias: ejercer profesiones, tener derechos políticos y la ciudadanía plena."],
+              ["Cambios y continuidades", "Su insistencia abrió las puertas de las escuelas normales y, eventualmente, de las universidades. En cambio, el sufragio femenino no se logró hasta mediados del siglo XX (1953)."],
+              ["Cómo influye hoy", "Los derechos políticos y sociales vigentes de las mujeres son el resultado de una larga historia y de la exigencia del derecho a aprender."]
+            ],
+            recuerda: [
+              "El Código Civil trataba a las mujeres casadas como menores de edad.",
+              "El ideal femenino de la época era el «ángel del hogar».",
+              "La primera gran demanda de las mujeres fue la educación.",
+              "Su presencia en los conflictos desmentía su supuesta fragilidad.",
+              "El voto federal femenino llegó en 1953."
+            ],
+            aprendiste: "Las mujeres del siglo XIX estaban excluidas por el Código Civil, el ideal del «ángel del hogar» y la falta de educación. Lucharon como soldaderas, enfermeras y espías, y con la pluma en revistas como Violetas del Anáhuac. Su primera demanda fue la educación; el voto federal llegó en 1953.",
+            actual: "Gracias a esas luchas hoy las mujeres estudian, trabajan y participan en política. Recordarlas ayuda a valorar que cada derecho fue una conquista y a ver lo que todavía falta.",
+            q: [
+              {
+                t: "op",
+                p: "¿Cuál fue la primera demanda de las mujeres del siglo XIX?",
+                o: ["El derecho a la educación", "La reforma agraria", "El derecho de huelga", "El servicio militar"],
+                c: 0,
+                e: "Argumentaban que solo así podrían desarrollarse y contribuir al progreso de la nación.",
+                h: "Con ella podían estudiar y luego ejercer profesiones."
+              },
+              {
+                t: "vf",
+                p: "El Código Civil permitía a las mujeres casadas controlar sus propiedades.",
+                c: false,
+                e: "No: se les negaba el control sobre sus propiedades y sobre sus hijos.",
+                h: "Recuerda que se les consideraba menores de edad."
+              },
+              {
+                t: "op",
+                p: "¿Qué ideal se les imponía a las mujeres en el siglo XIX?",
+                o: ["El «ángel del hogar»", "La mujer sufragista", "La mujer obrera sindicalizada", "La mujer legisladora"],
+                c: 0,
+                e: "Ese ideal las dedicaba exclusivamente a la familia y al hogar.",
+                h: "Era una imagen dedicada al espacio doméstico."
+              },
+              {
+                t: "comp",
+                p: "Completa el texto.",
+                x: "La presencia de las mujeres en los conflictos desmentía su supuesta ____.",
+                o: ["fragilidad", "riqueza", "edad", "religión"],
+                c: 0,
+                e: "Como soldaderas, enfermeras y espías demostraron lo contrario.",
+                h: "Se pensaba que eran débiles, y su participación mostró otra cosa."
+              }
+            ]
+          },
+          {
+            nombre: "Nivel 6: Hoy, logros y pendientes",
+            explica: [
+              ["Contexto", "Las luchas del siglo XIX dejaron conquistas que hoy parecen normales. Comparar lo que se exigía antes con lo que existe hoy nos permite ver qué se logró y qué sigue pendiente."],
+              ["Logros del campo", "El derecho a la propiedad de la tierra y el apoyo al campo, con programas para campesinos y leyes que protegen sus derechos."],
+              ["Logros obreros", "La jornada laboral de 8 horas, el salario mínimo, el derecho a vacaciones, la seguridad social y el derecho a organizarse en sindicatos."],
+              ["Logros de las mujeres", "El derecho al voto, el acceso a la educación y al trabajo, la participación política y leyes para proteger la igualdad y combatir la violencia contra las mujeres."],
+              ["Lo que sigue pendiente", "En el campo: mejorar las condiciones económicas, garantizar precios justos para los productos y tener mayor acceso al agua. En el trabajo: mejorar los salarios, evitar la explotación y lograr mejores condiciones para todos. Para las mujeres: lograr una igualdad real, reducir la violencia y eliminar la discriminación y las diferencias laborales."],
+              ["Cómo influye hoy", "Los derechos vigentes no fueron concesiones del poder, sino conquistas sociales logradas desde abajo, con sacrificio y perseverancia. Entenderlo ayuda a imaginar una nación más justa e incluyente."]
+            ],
+            recuerda: [
+              "Logros obreros: jornada de 8 horas, salario mínimo, vacaciones y seguridad social.",
+              "Logros de las mujeres: voto, educación, trabajo y participación política.",
+              "Pendientes: igualdad real, menos violencia de género, precios justos y agua para el campo.",
+              "Orden: Ley Lerdo (1856) → Gran Círculo (1872) → Artículos 27 y 123 (1917) → voto femenino (1953)."
+            ],
+            aprendiste: "Hoy existen la propiedad de la tierra, la jornada de 8 horas, el salario mínimo, las vacaciones, los sindicatos, el voto y la educación para las mujeres. Siguen pendientes mejores salarios, precios justos y agua para el campo, y la igualdad real y el fin de la violencia contra las mujeres.",
+            actual: "Los derechos no fueron un regalo: fueron conquistas. Saber qué se logró y qué falta nos permite defenderlos y seguir exigiendo una sociedad más justa.",
+            q: [
+              {
+                t: "op",
+                p: "¿Cuál de estos es un logro actual de las luchas obreras?",
+                o: ["La jornada laboral de 8 horas", "La Ley Lerdo", "El voto femenino en 1857", "El permiso del trabajo infantil"],
+                c: 0,
+                e: "Junto con el salario mínimo, las vacaciones y la seguridad social, es fruto de esas luchas.",
+                h: "Piensa en cuántas horas se trabajaba antes: de 12 a 16."
+              },
+              {
+                t: "vf",
+                p: "Hoy ya se logró la igualdad real entre mujeres y hombres.",
+                c: false,
+                e: "No: siguen pendientes la igualdad real, el fin de la violencia de género y la discriminación laboral.",
+                h: "Recuerda lo que el cuadro marca como pendiente para las mujeres."
+              },
+              {
+                t: "op",
+                p: "¿Cuál sigue siendo una lucha pendiente del campo?",
+                o: ["Garantizar precios justos y mayor acceso al agua", "Obtener el voto", "Fundar el Gran Círculo de Obreros", "Prohibir el trabajo infantil en las fábricas"],
+                c: 0,
+                e: "El campo todavía reclama mejores condiciones económicas, precios justos y agua.",
+                h: "Es algo que necesitan los campesinos para producir y vender."
+              },
+              {
+                t: "ord",
+                p: "Ordena este recorrido histórico.",
+                o: ["Ley Lerdo", "Gran Círculo de Obreros", "Artículos 27 y 123 de la Constitución", "Voto femenino federal"],
+                e: "1856 → 1872 → 1917 → 1953.",
+                h: "Va de la Reforma liberal al voto de las mujeres, pasando por la Constitución de 1917."
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    // de aquí para abajo es el código que hace funcionar la página
+
+    // ayudas
+    const $ = (selector) => document.querySelector(selector);
+    const $$ = (selector) => document.querySelectorAll(selector);
+
+    // revuelve una lista (devuelve una copia)
+    function mezclar(lista) {
+      const copia = lista.slice();
+      for (let i = copia.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const temp = copia[i];
+        copia[i] = copia[j];
+        copia[j] = temp;
+      }
+      return copia;
+    }
+
+    // revuelve y procura que quede en un orden distinto al anterior
+    function mezclarDistinto(lista, previo) {
+      if (previo && lista.length === 2) return previo.slice().reverse();
+      let copia = mezclar(lista);
+      for (let i = 0; i < 10 && previo && lista.length > 1 && copia.join() === previo.join(); i++) {
+        copia = mezclar(lista);
+      }
+      return copia;
+    }
+
+    const FELICITACIONES = ["¡Excelente!", "¡Muy bien!", "¡Así se hace!", "¡Correcto!"];
+
+    function felicitar() {
+      return FELICITACIONES[Math.floor(Math.random() * FELICITACIONES.length)];
+    }
+
+    // progreso (vive solo en memoria: al cerrar o con F5 se reinicia todo)
+    const unidad = DATOS.unidad;
+    const totalLecciones = unidad.lecciones.length;
+    const CLAVE = "hist-v2-eq" + unidad.equipo;
+    const PROGRESO_INICIAL = { xp: 0, racha: 0, ultimo: "", prog: 0 };
+
+    let S = Object.assign({}, PROGRESO_INICIAL); // S.prog = cuántas lecciones lleva terminadas
+    let L = null;                                // lección actual
+
+    // textos fijos
+    $("#marca").textContent = "Progresión " + unidad.equipo + " · " + unidad.nombre;
+    $("#hoy-p").textContent = unidad.hoy;
+    $("#fuentes").innerHTML = DATOS.fuentes.map((fuente) => "<li>" + fuente + "</li>").join("");
+    $("#pie-equipo").innerHTML = "<p>" + DATOS.pie + "</p><p><b>Integrantes:</b></p><ul class=\"integrantes\">" + DATOS.integrantes.map((n) => "<li>" + n + "</li>").join("") + "</ul><p>" + DATOS.pie2 + "</p>";
+
+    // el enlace "Fuentes" del menú abre la lista
+    $("#ir-fuentes").addEventListener("click", () => { $("#det-fuentes").open = true; });
+
+    // pantalla de inicio
+    function pintarInicio() {
+      $("#s-xp").textContent = S.xp;
+      $("#s-racha").textContent = S.racha;
+
+      const zigzag = [0, 50, 0, -50]; // para que el camino haga zigzag
+
+      const nodos = unidad.lecciones.map((leccion, i) => {
+        const hecho = i < S.prog;
+        const actual = i === S.prog;
+        const abierto = i <= S.prog; // solo se abre la siguiente al terminar la anterior
+        const icono = !abierto ? "🔒" : (i === 0 ? unidad.icono : "⭐");
+
+        return `
+          <li class="nodo-wrap">
+            ${actual ? '<span class="burbuja">¡EMPIEZA!</span>' : ""}
+            <button class="nodo${hecho ? " hecho" : ""}" type="button" style="--x: ${zigzag[i % zigzag.length]}px"
+              data-i="${i}" aria-label="${leccion.nombre}${abierto ? "" : " (bloqueado)"}"${abierto ? "" : " disabled"}>${icono}</button>
+            <span class="nombre-n">${leccion.nombre}</span>
+            ${abierto ? "" : '<small class="aviso">Termina el nivel anterior</small>'}
+          </li>`;
+      });
+
+      const metaFinal = S.prog >= totalLecciones ? '<p class="meta">🏆 ¡Unidad completada!</p>' : "";
+
+      $("#ruta").innerHTML = `
+        <header class="unidad">
+          <small>Equipo ${unidad.equipo} · Progresión ${unidad.equipo}</small>
+          <h1>${unidad.icono} ${unidad.nombre}</h1>
+          <p>${unidad.tema}</p>
+        </header>
+
+        <ol class="camino ruta-anim">${nodos.join("")}</ol>
+        ${metaFinal}`;
+    }
+
+    // un solo escuchador para todos los niveles (menos trabajo para el teléfono)
+    $("#ruta").addEventListener("click", (evento) => {
+      const nodo = evento.target.closest(".nodo");
+      if (!nodo || nodo.disabled) return;
+      empezar(Number(nodo.dataset.i));
+    });
+
+    // un solo escuchador para todos los botones de la lección
+    $("#leccion").addEventListener("click", (evento) => {
+      const boton = evento.target.closest("button");
+      if (!boton || boton.disabled) return;
+
+      const id = boton.id;
+
+      if (id === "go") pregunta();
+      else if (id === "chk") comprobar();
+      else if (id === "sig") siguiente();
+      else if (id === "fin" || id === "sal") cerrar();
+      else if (id === "retry") pregunta(true);
+      else if (id === "rein") reiniciar();
+      else if (boton.classList.contains("cerrar")) salir();
+      else if (L.listo) return;
+      else if (boton.classList.contains("op")) elegirOpcion(boton);
+      else if (boton.classList.contains("chip")) tocarFicha(boton);
+    });
+
+    // la explicación del nivel: bloques con título + datos para recordar
+    function explicacionHTML(leccion) {
+      const bloques = leccion.explica
+        .map(([titulo, texto]) => `<section class="bloque"><h3>${titulo}</h3><p>${texto}</p></section>`)
+        .join("");
+      const datos = leccion.recuerda.map((d) => "<li>" + d + "</li>").join("");
+
+      return `${bloques}<section class="bloque recuerda"><h3>✅ Para recordar</h3><ul>${datos}</ul></section>`;
+    }
+
+    // lección: empezar, salir y marcadores
+    function empezar(indice) {
+      const leccion = unidad.lecciones[indice];
+
+      L = {
+        li: indice,
+        cola: leccion.q.slice(), // preguntas que faltan
+        total: leccion.q.length,
+        bien: 0,
+        errores: 0,
+        listo: false,
+        acierto: false,
+        sel: null,
+        resp: [],
+        pool: []
+      };
+
+      const panel = $("#leccion");
+      panel.hidden = false;
+      panel.innerHTML = `
+        <header class="l-top">
+          <button class="cerrar" type="button" aria-label="Salir de la lección">✕</button>
+          <div class="barra" role="progressbar" aria-label="Avance de la lección"
+            aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>
+          <span class="vidas" aria-label="Errores">Errores: 0</span>
+        </header>
+
+        <article class="l-cuerpo">
+          <h2>${leccion.nombre}</h2>
+          <p class="lee">Lee con atención: aquí está lo que necesitas para contestar las preguntas.</p>
+          ${explicacionHTML(leccion)}
+        </article>
+
+        <footer class="pie" aria-live="polite">
+          <div><button class="btn" type="button" id="go">Ya lo leí, ¡empezar!</button></div>
+        </footer>`;
+
+      $("#go").focus({ preventScroll: true });
+    }
+
+    function reiniciar() {
+      empezar(L.li);
+      pregunta();
+    }
+
+    function salir() {
+      if (confirm("¿Salir de la lección? Perderás el avance.")) cerrar();
+    }
+
+    function cerrar() {
+      $("#leccion").hidden = true;
+      pintarInicio();
+    }
+
+    function actualizarMarcadores() {
+      const porcentaje = Math.round((L.bien / L.total) * 100);
+
+      $(".barra i").style.width = porcentaje + "%";
+      $(".barra").setAttribute("aria-valuenow", porcentaje);
+      $(".vidas").textContent = "Errores: " + L.errores;
+    }
+
+    function mostrarPie(html, clase) {
+      const pie = $(".pie");
+      pie.className = clase;
+      pie.innerHTML = "<div>" + html + "</div>";
+    }
+
+    // opción múltiple y verdadero/falso
+    function vistaOpciones(q) {
+      const opciones = q.t === "vf" ? ["Verdadero", "Falso"] : q.o;
+      const botones = L.orden
+        .map((k) => `<button class="op" type="button" data-k="${k}" aria-pressed="false">${opciones[k]}</button>`)
+        .join("");
+
+      return `<div class="opciones">${botones}</div>`;
+    }
+
+    function elegirOpcion(boton) {
+      $$(".op").forEach((op) => {
+        op.classList.remove("sel");
+        op.setAttribute("aria-pressed", "false");
+      });
+
+      boton.classList.add("sel");
+      boton.setAttribute("aria-pressed", "true");
+      L.sel = Number(boton.dataset.k);
+      $("#chk").disabled = false;
+    }
+
+    // ordenar: se tocan las fichas en el orden que crea correcto
+    function vistaOrdenar(q, previo) {
+      L.pool = mezclarDistinto(q.o.map((_, k) => k), previo);
+      L.ultimo = L.pool;
+
+      return `
+        <div class="linea" id="resp" aria-label="Tu orden"></div>
+        <div class="pool" id="pool" aria-label="Opciones"></div>`;
+    }
+
+    function pintarOrden() {
+      const q = L.cola[0];
+      const ficha = (k) => `<button class="chip" type="button" data-k="${k}">${q.o[k]}</button>`;
+
+      $("#resp").innerHTML = L.resp.map(ficha).join("");
+      $("#pool").innerHTML = L.pool.filter((k) => L.resp.indexOf(k) === -1).map(ficha).join("");
+      $("#chk").disabled = L.resp.length !== q.o.length;
+    }
+
+    // completar el texto: se elige la palabra que llena el hueco
+    function vistaCompletar(q) {
+      const partes = q.x.split("____");
+      const fichas = L.orden
+        .map((k) => `<button class="chip" type="button" data-k="${k}" aria-pressed="false">${q.o[k]}</button>`)
+        .join("");
+
+      return `
+        <p class="frase">${partes[0]}<span class="hueco" id="hueco">&nbsp;</span>${partes[1]}</p>
+        <div class="pool" id="pool">${fichas}</div>`;
+    }
+
+    // las fichas funcionan distinto según el tipo de pregunta
+    function tocarFicha(boton) {
+      const q = L.cola[0];
+      const k = Number(boton.dataset.k);
+
+      if (q.t === "ord") {
+        // si ya estaba puesta, se regresa a las opciones
+        L.resp = L.resp.indexOf(k) === -1 ? L.resp.concat(k) : L.resp.filter((v) => v !== k);
+        pintarOrden();
+        return;
+      }
+
+      $$("#pool .chip").forEach((ficha) => {
+        ficha.classList.remove("sel");
+        ficha.setAttribute("aria-pressed", "false");
+      });
+
+      boton.classList.add("sel");
+      boton.setAttribute("aria-pressed", "true");
+      L.sel = k;
+      $("#hueco").textContent = q.o[k];
+      $("#chk").disabled = false;
+    }
+
+    // muestra la pregunta actual (la primera de la cola)
+    function pregunta(reintento) {
+      const q = L.cola[0];
+
+      L.listo = false;
+      L.sel = null;
+      L.resp = [];
+
+      // las opciones se revuelven cada vez que se carga la pregunta y cada vez que se falla
+      const previo = reintento ? L.ultimo : null;
+
+      if (q.t === "op" || q.t === "comp" || q.t === "vf") {
+        const base = q.t === "vf" ? [0, 1] : q.o.map((_, k) => k);
+        L.orden = mezclarDistinto(base, previo);
+        L.ultimo = L.orden;
+      }
+
+      let cuerpo = "<h2>" + q.p + "</h2>";
+
+      if (q.t === "ord") cuerpo += vistaOrdenar(q, previo);
+      else if (q.t === "comp") cuerpo += vistaCompletar(q);
+      else cuerpo += vistaOpciones(q);
+
+      // la explicación se puede volver a consultar mientras se contesta
+      cuerpo += '<details class="repaso"><summary>📖 Repasar la explicación</summary>' + explicacionHTML(unidad.lecciones[L.li]) + "</details>";
+
+      $(".l-cuerpo").innerHTML = cuerpo;
+      actualizarMarcadores();
+      mostrarPie('<button class="btn" type="button" id="chk" disabled>Comprobar</button>', "pie");
+
+      if (q.t === "ord") pintarOrden();
+    }
+
+    // comprobar la respuesta
+    function comprobar() {
+      const q = L.cola[0];
+
+      L.listo = true;
+
+      if (q.t === "ord") L.acierto = L.resp.every((v, k) => v === k);
+      else if (q.t === "vf") L.acierto = (L.sel === 0) === q.c;
+      else L.acierto = L.sel === q.c;
+
+      if (L.acierto) {
+        L.bien++;
+        actualizarMarcadores();
+
+        mostrarPie(`
+          <b>${felicitar()}</b>
+          <p>${q.e}</p>
+          <button class="btn" type="button" id="sig">Continuar</button>`, "pie ok");
+
+        $("#sig").focus({ preventScroll: true });
+        return;
+      }
+
+      // si falla no se muestra la respuesta: solo una pista y se vuelve a intentar
+      L.errores++;
+      actualizarMarcadores();
+
+      mostrarPie(`
+        <b>Todavía no. ¡Inténtalo de nuevo!</b>
+        <p>💡 Pista: ${q.h}${q.t === "ord" ? "<br>➡️ Secuencia correcta: " + q.o.join(" → ") : ""}</p>
+        <button class="btn rojo" type="button" id="retry">Intentar de nuevo</button>`, "pie mal");
+
+      $("#retry").focus({ preventScroll: true });
+    }
+
+    // solo se llega aquí con la respuesta correcta
+    function siguiente() {
+      L.cola.shift();
+
+      if (L.cola.length) pregunta();
+      else terminar();
+    }
+
+    // resumen de lo aprendido y de por qué importa hoy
+    function resumenHTML(lista) {
+      return lista.map((l) => `
+          <aside class="resumen">
+            <h3>📚 ${l.nombre}</h3>
+            <h4>Lo que aprendiste</h4>
+            <p>${l.aprendiste}</p>
+            <h4>Por qué importa hoy</h4>
+            <p>${l.actual}</p>
+          </aside>`).join("");
+    }
+
+    function terminar() {
+      const esUltima = L.li === totalLecciones - 1;
+      const abreNivel = L.li === S.prog && !esUltima; // terminó el nivel más avanzado
+      const xp = L.total * 10 + (L.errores === 0 ? 10 : 0); // +10 si no falló ninguna
+
+      S.xp += xp;
+      actualizarRacha();
+
+      if (L.li === S.prog) S.prog++; // abre la siguiente lección
+
+      $(".barra i").style.width = "100%";
+      $(".l-cuerpo").innerHTML = `
+        <section class="fin">
+          <div class="big" aria-hidden="true">${esUltima ? "🏆" : "🎉"}</div>
+          <h2>${esUltima ? "¡Unidad completada!" : "¡Lección completada!"}</h2>
+
+          <div class="cajas">
+            <div class="caja"><span>XP</span><b>+${xp}</b></div>
+            <div class="caja"><span>ERRORES</span><b>${L.errores}</b></div>
+          </div>
+
+          ${abreNivel ? `<p class="desbloqueo">🔓 ¡Desbloqueaste «${unidad.lecciones[L.li + 1].nombre}»!</p>` : ""}
+          ${resumenHTML(esUltima ? unidad.lecciones : [unidad.lecciones[L.li]])}
+          ${esUltima ? `
+          <aside class="hoy">
+            <h3>Piensa y conecta con hoy</h3>
+            <p>${unidad.hoy}</p>
+          </aside>` : ""}
+        </section>`;
+
+      mostrarPie(`
+        <button class="btn" type="button" id="fin">Continuar</button>
+        <button class="btn sec" type="button" id="rein">Reiniciar lección</button>`, "pie");
+    }
+
+    // la racha sube si estudió ayer; si no, vuelve a 1
+    function actualizarRacha() {
+      const hoy = new Date().toDateString();
+      const ayer = new Date(Date.now() - 864e5).toDateString();
+
+      if (S.ultimo === hoy) return;
+
+      S.racha = S.ultimo === ayer ? S.racha + 1 : 1;
+      S.ultimo = hoy;
+    }
+
+    // Al cerrar la app o recargar con F5 todo empieza de cero (no se guarda nada)
+    try { localStorage.removeItem(CLAVE); } catch (error) { /* nada que borrar */ }
+
+    window.addEventListener("pageshow", (evento) => {
+      // si el navegador restaura la página desde memoria, se recarga limpia
+      if (evento.persisted) location.reload();
+    });
+
+    // teléfonos con poca memoria o pocos núcleos: sin animaciones
+    if ((navigator.deviceMemory && navigator.deviceMemory <= 2) ||
+        (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2)) {
+      document.documentElement.classList.add("lento");
+    }
+
+    // arranque
+    pintarInicio();
+  </script>
+</body>
+
+</html>
